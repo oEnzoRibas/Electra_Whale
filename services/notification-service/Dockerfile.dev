@@ -1,4 +1,4 @@
-# Dockerfile.dev para API Gateway (Node.js)
+# Dockerfile.dev para Notification Service (Node.js)
 
 FROM node:20-alpine
 
@@ -18,7 +18,7 @@ COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
 # Expor a porta
-EXPOSE 8080
+EXPOSE 3003
 
 # Rodar hot reload com ts-node-dev
 CMD ["sh", "-c", "./wait-for-it.sh postgres:5432 -- npm run dev"]
