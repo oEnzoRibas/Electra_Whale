@@ -1,0 +1,21 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "Auth Microservice for Electra Whale",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "auth",
+    "docker",
+    "node"
+  ],
+  "author": "oEnzoRibas",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "redis": "^4.6.15"
+  }
+}

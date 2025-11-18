@@ -1,0 +1,14 @@
+{
+  "name": "google-calendar-integration",
+  "version": "1.0.0",
+  "description": "Google Calendar integration microservice for Electra Whale",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+    "author": "oEnzoRibas",
+    "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

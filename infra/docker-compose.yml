@@ -1,49 +1,47 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
     container_name: ew-pgdb
     environment:
-      - POSTGRES_DB: ew_database
-      - POSTGRES_USER: ewadm
-      - POSTGRES_PASSWORD: electrawhale
+      POSTGRES_DB: ew_database
+      POSTGRES_USER: ewadm
+      POSTGRES_PASSWORD: electrawhale
     volumes:
-      - pgdata: /var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
-      -"5432:5432"
+      - "5432:5432"
     restart:   unless-stopped
   
   redis:
     image: redis:7
     container_name: ew-redis
     volumes:
-      -  redisdata: /data
+      -  redisdata:/data
     ports:
-      -"6379:6379"
+      - "6379:6379"
     restart: unless-stopped
 
   
   api-gateway:
-    build: ./services/api-gateway
+    build: ..\services\auth-service
     depends_on:
       - auth-service
       - user-service
       - todo-service
 
   auth-service:
-    build: ./services/auth-service
+    build: ..\services\auth-service
     depends_on:
       - postgres
       - redis
 
   user-service:
-    build: ./services/user-service
+    build: ..\services\user-service
     depends_on:
       - postgres
 
   todo-service:
-    build: ./services/todo-service
+    build: ..\services\todo-service
     depends_on:
       - postgres
 

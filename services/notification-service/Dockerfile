@@ -1,4 +1,4 @@
-# Dockerfile for API Gateway Service (Node.js)
+# Dockerfile for notification Service (Node.js)
 
 # BUILD
 
@@ -15,6 +15,6 @@ COPY --from=builder /app/package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app .
 
-EXPOSE 8080
+EXPOSE 3003
 
 CMD [ "node", "index.js" ]

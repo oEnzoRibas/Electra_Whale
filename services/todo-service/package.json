@@ -1,0 +1,16 @@
+{
+  "name": "todo-service",
+  "version": "1.0.0",
+  "description": "Task Management microservice for Electra Whale",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  
+  "author": "oEnzoRibas",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}

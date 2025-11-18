@@ -1,0 +1,15 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+"description": "API Gateway and router for Electra Whale",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "oEnzoRibas",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.0"
+  }
+}

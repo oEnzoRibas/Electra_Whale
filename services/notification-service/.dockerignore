@@ -1,0 +1,16 @@
+# Ignore node modules and common build/output folders
+node_modules/
+dist/
+build/
+tmp/
+
+# VCS and related files
+.git
+.gitignore
+
+# Logs, env files, macOS files, and IDE settings
+npm-debug.log*
+.env
+.DS_Store
+.vscode/
+.idea/
