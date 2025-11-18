@@ -5,10 +5,10 @@ import { User, Prisma } from "../generated/prisma/index";
 const logger = pino({ name: 'users-model', level: 'info' });
 
 export const UserModel = {
-    create: async (email: string, hashedPassword: string) => {
+    create: async (username: string, email: string, hashedPassword: string) => {
 
         return prisma.user.create({
-            data: { email, password: hashedPassword },
+            data: { username: username, email: email, password: hashedPassword },
         });
 
     },
