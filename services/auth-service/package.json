@@ -4,6 +4,8 @@
   "description": "Auth Microservice for Electra Whale",
   "main": "dist/index.js",
   "scripts": {
+    "prisma:generate": "dotenv prisma generate",
+    "prisma:migrate": "dotenv npx prisma migrate dev",
     "dev": "ts-node-dev --respawn --transpile-only --poll src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
@@ -31,6 +33,7 @@
     "@types/express": "^5.0.5",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.10.1",
+    "dotenv-cli": "^11.0.0",
     "prisma": "^6.19.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
