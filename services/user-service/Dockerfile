@@ -2,17 +2,20 @@
 
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json ./
-RUN npm install
-COPY . .
-# RUN npm run build
 
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm install
+COPY . ./
+RUN npm run build
+
+# PRODUCTION
 FROM node:20-alpine AS production
 WORKDIR /app
-COPY --from=builder /app/package.json ./
+
+COPY package.json package-lock.json ./
 RUN npm install --omit=dev
-COPY --from=builder /app .
+
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3001
-
-CMD [ "node", "index.js" ]
+CMD ["node", "dist/index.js"]

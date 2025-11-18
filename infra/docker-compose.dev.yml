@@ -1,0 +1,96 @@
+# DOCKER COMPOSE FILE FOR DEVELOPMENT ENVIRONMENT
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ew-pgdb
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    restart:   unless-stopped
+  
+  redis:
+    image: redis:7
+    container_name: ew-redis
+    volumes:
+      -  redisdata:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  
+  api-gateway:
+    build: 
+      context: ../services/api-gateway-service
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${API_GATEWAY_PORT}:8080"
+    depends_on:
+      - auth-service
+      - user-service
+      - todo-service
+    volumes:
+      - ../services/api-gateway-service:/app
+    command: npm run dev
+
+  auth-service:
+    build: 
+      context: ../services/auth-service
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../services/auth-service:/app
+    command: sh -c "./wait-for-it.sh postgres:5432 -- ./wait-for-it.sh redis:6379 -- npm run dev"
+
+  user-service:
+    build: 
+      context: ../services/user-service
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    volumes:
+      - ../services/user-service:/app
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+
+  todo-service:
+    build: 
+      context: ../services/todo-service
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    volumes:
+      - ../services/todo-service:/app
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+
+  notification-service:
+    build: 
+      context: ../services/notification-service
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    volumes:
+      - ../services/notification-service:/app
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+
+  google-calendar-service:
+    build: 
+      context: ../services/google-calendar-service
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    volumes:
+      - ../services/google-calendar-service:/app
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"  
+
+
+volumes:
+  pgdata: 
+    driver: local
+  redisdata:
+    driver: local

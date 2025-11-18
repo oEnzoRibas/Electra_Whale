@@ -1,4 +1,6 @@
-# Dockerfile for google-calendar-integration Service (Node.js)
+# Dockerfile for API Gateway Service (Node.js)
+
+# BUILD
 
 FROM node:20-alpine AS builder
 WORKDIR /app
@@ -17,5 +19,5 @@ RUN npm install --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3004
+EXPOSE 8080
 CMD ["node", "dist/index.js"]

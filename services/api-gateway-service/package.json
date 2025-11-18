@@ -1,29 +1,25 @@
 {
-  "name": "user-service",
+  "name": "api-gateway",
   "version": "1.0.0",
-  "description": "User Management microservice for Electra Whale",
+  "description": "API Gateway and router for Electra Whale",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --poll src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
-  "keywords": [
-    "user",
-    "docker",
-    "node"
-  ],
   "author": "oEnzoRibas",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "pg": "^8.12.0"
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.5",
-    "@types/node": "^24.10.1",
+    "@types/express": "^4.17.25",
+    "@types/http-proxy-middleware": "^1.0.0",
+    "@types/node": "^20.19.25",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.9.3"
   }
 }
