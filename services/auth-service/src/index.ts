@@ -1,6 +1,8 @@
 // API Auth Microservice for Electra Whale
 
 import express, { Request, Response } from 'express';
+import pino from 'pino';
+const logger = pino({ name: 'auth-service', level: 'info' });
 
 const app = express();
 const PORT =  process.env.PORT || 8080;
@@ -17,5 +19,5 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Auth Service is running on http://0.0.0.0:${PORT}`);
+    logger.info(`Auth Service is running on http://0.0.0.0:${PORT}`);
 })
