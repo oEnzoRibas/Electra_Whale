@@ -10,7 +10,7 @@ RUN apk add --no-cache bash inotify-tools
 
 # Copiar package.json e instalar todas as dependências
 COPY package.json package-lock.json tsconfig.json ./
-RUN npm install
+RUN npm ci
 
 # Copiar todo o código
 COPY . .

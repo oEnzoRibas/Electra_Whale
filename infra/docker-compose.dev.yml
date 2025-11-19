@@ -44,6 +44,10 @@ services:
     depends_on:
       - postgres
       - redis
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
       - ../services/auth-service:/app
     command: sh -c "./wait-for-it.sh postgres:5432 -- ./wait-for-it.sh redis:6379 -- npm run dev"
@@ -54,8 +58,13 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - postgres
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
       - ../services/user-service:/app
+      - /app/node_modules
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   todo-service:
@@ -64,8 +73,13 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - postgres
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
       - ../services/todo-service:/app
+      - /app/node_modules
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   notification-service:
@@ -74,8 +88,13 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - postgres
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
       - ../services/notification-service:/app
+      - /app/node_modules
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   google-calendar-service:
@@ -84,8 +103,13 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - postgres
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
       - ../services/google-calendar-service:/app
+      - /app/node_modules
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"  
 
 
