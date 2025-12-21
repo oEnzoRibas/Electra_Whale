@@ -17,8 +17,11 @@ COPY . .
 COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
+# Garantir permissão para todos os scripts .sh do projeto
+RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
+
 # Expor a porta
 EXPOSE 3003
 
 # Rodar hot reload com ts-node-dev
-CMD ["sh", "-c", "./wait-for-it.sh postgres:5432 -- npm run dev"]
+CMD ["sh", "/app/wait-for-it.sh", "postgres:5432", "--", "npm", "run", "dev"]
