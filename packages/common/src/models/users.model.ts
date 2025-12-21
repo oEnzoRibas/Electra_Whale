@@ -1,0 +1,53 @@
+import { prisma } from "../utils/prismaClient";
+import pino from 'pino';
+import { User } from "@prisma/client";
+
+const logger = pino({ name: 'common-users-model', level: 'info' });
+
+export const UserModel = {
+    create: async (username: string, email: string, hashedPassword: string) => {
+
+        try {
+            const existingUser = await prisma.user.findUnique({ where: { email } });   
+            if (existingUser) {
+                throw new Error('User with this email already exists.');
+            }
+        } catch (error) {
+            logger.error({ err: error }, 'An unexpected error occurred during user creation.');
+            throw error;
+        }
+        
+        return prisma.user.create({
+            data: { username: username, email: email, password: hashedPassword },
+        });
+
+    },
+
+    findByEmail: async (email: string): Promise<User> => {
+        return prisma.user.findUnique({ where: { email } });
+    },
+
+    findById: async (id: number): Promise<User> => {
+        return prisma.user.findUnique({ where: { id } });
+    },
+
+    updatePassword: async (id: number, hashedPassword: string) => {
+        return prisma.user.update({
+            where: { id },
+            data: { password: hashedPassword },
+        });
+    },
+
+    delete: async (id: number) => {
+        return prisma.user.delete({
+            where: { id },
+        });
+    },
+
+    updateUsername: async (id: number, username: string) => {
+        return prisma.user.update({
+            where: { id },
+            data: { username },
+        });
+    }
+};

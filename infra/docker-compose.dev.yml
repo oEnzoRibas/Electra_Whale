@@ -24,17 +24,23 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
 
-  
   api-gateway:
     build: 
-      context: ../services/api-gateway-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/api-gateway-service/Dockerfile.dev
     ports:
       - "${API_GATEWAY_PORT}:8080"
     depends_on:
       - auth-service
       - user-service
       - todo-service
+    environment:
+      - USER_SERVICE_PORT=${USER_PORT}
+      - AUTH_SERVICE_PORT=${AUTH_PORT}
+      - TODO_SERVICE_PORT=${TODO_PORT}
+      - NOTIFICATION_SERVICE_PORT=${NOTIFICATION_PORT}
+      - GOOGLE_CALENDAR_SERVICE_PORT=${GOOGLE_CALENDAR_PORT}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
     volumes:
       - ../services/api-gateway-service:/app
       - /app/node_modules
@@ -42,8 +48,8 @@ services:
 
   auth-service:
     build: 
-      context: ../services/auth-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/auth-service/Dockerfile.dev
     depends_on:
       - postgres
       - redis
@@ -53,18 +59,18 @@ services:
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     # ports:
     #   - "${AUTH_PORT}:3000"
-
     expose:
       - "${AUTH_PORT}"
     volumes:
       - ../services/auth-service:/app
       - /app/node_modules
-    command: sh -c "./wait-for-it.sh postgres:5432 -- ./wait-for-it.sh redis:6379 -- npx prisma migrate deploy && npx prisma generate && npm run dev"
+      - ../packages/common:/app/packages/common
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npx prisma generate --schema=./packages/common/prisma/schema.prisma && npm run dev"
 
   user-service:
     build: 
-      context: ../services/user-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/user-service/Dockerfile.dev
     depends_on:
       - postgres
     environment:
@@ -74,12 +80,13 @@ services:
     volumes:
       - ../services/user-service:/app
       - /app/node_modules
+      - ../packages/common:/app/packages/common
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   todo-service:
     build: 
-      context: ../services/todo-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/todo-service/Dockerfile.dev
     depends_on:
       - postgres
     environment:
@@ -89,12 +96,13 @@ services:
     volumes:
       - ../services/todo-service:/app
       - /app/node_modules
+      - ../packages/common:/app/packages/common
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   notification-service:
     build: 
-      context: ../services/notification-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/notification-service/Dockerfile.dev
     depends_on:
       - postgres
     environment:
@@ -104,12 +112,13 @@ services:
     volumes:
       - ../services/notification-service:/app
       - /app/node_modules
+      - ../packages/common:/app/packages/common
     command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
 
   google-calendar-service:
     build: 
-      context: ../services/google-calendar-service
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: services/google-calendar-service/Dockerfile.dev
     depends_on:
       - postgres
     environment:
@@ -119,7 +128,8 @@ services:
     volumes:
       - ../services/google-calendar-service:/app
       - /app/node_modules
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"  
+      - ../packages/common:/app/packages/common
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev" 
 
 
 volumes:
