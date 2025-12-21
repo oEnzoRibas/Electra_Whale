@@ -19,6 +19,7 @@
 
     "baseUrl": "./src",
     "paths": {
+      "@ew/common": ["./packages/common/src/index.ts"],
       "@/*": ["*"]
     }
   },

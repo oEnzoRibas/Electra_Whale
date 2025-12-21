@@ -1,6 +1,7 @@
 // API User Microservice for Electra Whale
 
 import express, { Request, Response } from 'express';
+import { authMiddleware } from '../../../packages/common/src/middleware/auth.middleware';
 
 const app = express();
 const PORT =  process.env.PORT || 3001;

@@ -17,11 +17,12 @@
 
     "forceConsistentCasingInFileNames": true,
 
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
+      "@ew/common": ["./packages/common/src/index.ts"],
       "@/*": ["*"]
     }
   },
-  "include": ["src"],
+  "include": ["src/**/*", "packages/common/src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

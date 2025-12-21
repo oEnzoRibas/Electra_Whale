@@ -6,7 +6,7 @@
   "scripts": {
     "prisma:generate": "dotenv prisma generate",
     "prisma:migrate": "dotenv npx prisma migrate dev",
-    "dev": "ts-node-dev --respawn --transpile-only --poll src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
@@ -18,14 +18,16 @@
   "author": "oEnzoRibas",
   "license": "MIT",
   "dependencies": {
+    "@ew/common": "file:../../packages/common",
     "@prisma/client": "^6.19.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "ioredis": "^5.8.2",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.12.0",
-    "redis": "^4.7.1"
+    "redis": "^4.7.1",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

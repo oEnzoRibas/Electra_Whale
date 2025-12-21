@@ -1,4 +1,4 @@
-import { UserModel } from '../models/users.model';
+import { UserModel } from '@ew/common';
 import { validatePassword, PasswordValidationError } from '../utils/passwordValidator'
 import * as bcrypt from 'bcrypt';
 import { User } from '../generated/prisma/index';

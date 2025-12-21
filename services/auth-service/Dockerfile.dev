@@ -1,29 +1,35 @@
-# Dockerfile.dev para Auth Service (Node.js)
-
+# Dockerfile.dev para Auth Service
 FROM node:20-alpine
 
 WORKDIR /app
 
 RUN apk add --no-cache bash inotify-tools
 
+# 1. Preparar a estrutura (Essencial para o npm ci não reclamar de caminhos locais)
+RUN mkdir -p packages/common
 
+# 2. Copiar os arquivos de lock e manifest EXPLICITAMENTE
+# O contexto do build é a raiz (..), então buscamos de dentro das pastas
+COPY services/auth-service/package.json services/auth-service/package-lock.json ./
+COPY services/auth-service/tsconfig.json ./
 
-# Copiar package.json e instalar todas as dependências
-COPY package.json package-lock.json tsconfig.json ./
-RUN npm ci
+# Copiamos o package.json da common porque o lock do auth-service 
+# provavelmente tem uma referência de "file:../packages/common"
+COPY packages/common/package.json ./packages/common/
 
-# Copiar todo o código
-COPY . .
+# 3. Executar o npm ci
+# Como os arquivos de lock estão no WORKDIR, ele vai rodar limpo
+RUN npm install
 
-# Garantir que wait-for-it.sh tenha permissão
-COPY wait-for-it.sh /app/wait-for-it.sh
-RUN chmod +x /app/wait-for-it.sh
+# 4. Copiar o restante do código
+COPY services/auth-service/ .
+COPY packages/common/ ./packages/common/
 
-# Garantir permissão para todos os scripts .sh do projeto
+# 5. Scripts e Permissões
+# O wait-for-it.sh deve estar na raiz de services/auth-service/ para ser copiado acima
+RUN chmod +x ./wait-for-it.sh
 RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
-# Expor a porta
 EXPOSE 3000
 
-# Rodar hot reload com ts-node-dev
 CMD ["sh", "-c", "./wait-for-it.sh postgres:5432 -- npm run dev"]

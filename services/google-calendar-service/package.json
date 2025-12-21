@@ -11,10 +11,12 @@
   "author": "oEnzoRibas",
   "license": "MIT",
   "dependencies": {
+    "@ew/common": "file:../../packages/common",
     "dotenv": "^17.2.3",
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@ew/common": "file: ../../packages/common",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "@types/pino": "^7.0.4",

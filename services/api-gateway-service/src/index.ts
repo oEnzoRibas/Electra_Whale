@@ -16,8 +16,10 @@ app.get('/health', (_req: Request, res: Response) => {
       });
 });
 
+// AUTH SERVICE PROXY
+
 app.use('/api/auth', createProxyMiddleware({
-  target: 'http://auth-service:3000',
+  target: `http://auth-service:${process.env.AUTH_SERVICE_PORT}`,
   changeOrigin: true,
   pathRewrite: {
     '^/api/auth': '',
@@ -31,8 +33,10 @@ app.use('/api/auth', createProxyMiddleware({
   }
 }));
 
+// TODO SERVICE PROXY
+
 app.use('/api/todos', createProxyMiddleware({
-  target: 'http://todo-service:3002',
+  target: `http://todo-service:${process.env.TODO_SERVICE_PORT}`,
   changeOrigin: true,
   pathRewrite: {
     '^/api/auth': '',
@@ -44,6 +48,16 @@ app.use('/api/todos', createProxyMiddleware({
   onProxyReq: (proxyReq, req) => {
     console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
   }
+}));
+
+// USER SERVICE PROXY
+
+app.use('/api/user', createProxyMiddleware({
+  target: `http://user-service:${process.env.USER_SERVICE_PORT}`,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api/user': '',
+  },
 }));
 
 

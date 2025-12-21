@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "rootDir": "./src",
     "outDir": "./dist",
+    
 
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -19,9 +20,11 @@
 
     "baseUrl": "./src",
     "paths": {
+      "@ew/common": ["./packages/common/src/index.ts"],
       "@/*": ["*"]
     }
   },
   "include": ["src"],
+  "include": ["src/**/*", "../../packages/common/src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
