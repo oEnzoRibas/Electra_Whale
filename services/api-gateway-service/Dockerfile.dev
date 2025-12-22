@@ -1,26 +1,23 @@
 # Dockerfile.dev para API Gateway (Node.js)
 
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache bash inotify-tools
+RUN apk update && apk add --no-cache bash openssl libc6-compat
 
-# 1. Copiar arquivos de dependências (Contexto na raiz ..)
 COPY services/api-gateway-service/package*.json ./
 COPY services/api-gateway-service/tsconfig.json ./
+COPY packages/common/package*.json ./packages/common/
 
-# 2. Executar o npm ci para garantir integridade total
 RUN npm install
 
-# 3. Copiar o código do serviço
 COPY services/api-gateway-service/ .
+COPY packages/common/ ./packages/common/
 
-# 4. Permissões de Scripts
 RUN chmod +x ./wait-for-it.sh
 RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
 EXPOSE 8080
 
-# O Gateway depende dos serviços, mas aqui espera o postgres por segurança/padrão
-CMD ["sh", "-c", "./wait-for-it.sh auth-service:3000 -- npm run dev"]
+# CMD ["sh", "-c", "./wait-for-it.sh auth-service:3000 -- npm run dev"]

@@ -1,6 +1,12 @@
 # DOCKER COMPOSE FILE FOR DEVELOPMENT ENVIRONMENT
+name: electra-whale-dev
 
 services:
+
+  # ---------------------------------------------------------------------------
+  # INFRASTRUCTURE (Database and Cache)
+  # ---------------------------------------------------------------------------
+
   postgres:
     image: postgres:16-alpine
     container_name: ew-pgdb
@@ -24,6 +30,11 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
 
+  # ---------------------------------------------------------------------------
+  # MICROSERVICES
+  # ---------------------------------------------------------------------------
+
+  # === API GATEWAY ===
   api-gateway:
     build: 
       context: ..
@@ -42,10 +53,16 @@ services:
       - GOOGLE_CALENDAR_SERVICE_PORT=${GOOGLE_CALENDAR_PORT}
       - JWT_SECRET=${AUTH_JWT_SECRET}
     volumes:
-      - ../services/api-gateway-service:/app
+    # sync source code changes with hotreload
+      - ../services/api-gateway-service:/app/services/api-gateway-service
+      - ../packages/common:/app/packages/common
+    # avoid overwriting node_modules in the container
+      - /app/services/api-gateway-service/node_modules
+      - /app/packages/common/node_modules
       - /app/node_modules
     command: npm run dev
 
+  # === AUTHENTICATION SERVICE ===
   auth-service:
     build: 
       context: ..
@@ -54,7 +71,7 @@ services:
       - postgres
       - redis
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${AUTH_JWT_SECRET}
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     # ports:
@@ -62,11 +79,21 @@ services:
     expose:
       - "${AUTH_PORT}"
     volumes:
-      - ../services/auth-service:/app
-      - /app/node_modules
+    # sync source code changes with hotreload
+      - ../services/auth-service:/app/services/auth-service
       - ../packages/common:/app/packages/common
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npx prisma generate --schema=./packages/common/prisma/schema.prisma && npm run dev"
+    # avoid overwriting node_modules in the container
+      - /app/services/auth-service/node_modules
+      - /app/packages/common/node_modules
+      - /app/node_modules
+    command: >
+      sh -c "./wait-for-it.sh postgres:5432 -- 
+      npx prisma generate --config=/app/packages/common/prisma.config.ts && 
+      npx prisma migrate deploy --config=/app/packages/common/prisma.config.ts && 
+      npm run dev"
 
+
+  # === USER SERVICE ===
   user-service:
     build: 
       context: ..
@@ -74,15 +101,24 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${AUTH_JWT_SECRET}
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
-      - ../services/user-service:/app
-      - /app/node_modules
+    # sync source code changes with hotreload
+      - ../services/user-service:/app/services/user-service
       - ../packages/common:/app/packages/common
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+    # avoid overwriting node_modules in the container
+      - /app/services/user-service/node_modules
+      - /app/packages/common/node_modules
+      - /app/node_modules
+    command: > 
+      sh -c "./wait-for-it.sh postgres:5432 -- 
+      npx prisma generate --config=/app/packages/common/prisma.config.ts && 
+      npm run dev"
 
+
+  # === TODO SERVICE ===
   todo-service:
     build: 
       context: ..
@@ -90,15 +126,24 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${AUTH_JWT_SECRET}
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
-      - ../services/todo-service:/app
-      - /app/node_modules
+    # sync source code changes with hotreload
+      - ../services/todo-service:/app/services/todo-service
       - ../packages/common:/app/packages/common
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+    # avoid overwriting node_modules in the container
+      - /app/services/todo-service/node_modules
+      - /app/packages/common/node_modules
+      - /app/node_modules
+    command: >
+      sh -c "./wait-for-it.sh postgres:5432 -- 
+      npx prisma generate --config=/app/packages/common/prisma.config.ts && 
+      npm run dev"
 
+
+  # === NOTIFICATION SERVICE ===
   notification-service:
     build: 
       context: ..
@@ -106,15 +151,24 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${AUTH_JWT_SECRET}
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
-      - ../services/notification-service:/app
-      - /app/node_modules
+    # sync source code changes with hotreload
+      - ../services/notification-service:/app/services/notification-service
       - ../packages/common:/app/packages/common
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev"
+    # avoid overwriting node_modules in the container
+      - /app/services/notification-service/node_modules
+      - /app/packages/common/node_modules
+      - /app/node_modules
+    command: >
+      sh -c "./wait-for-it.sh postgres:5432 -- 
+      npx prisma generate --config=/app/packages/common/prisma.config.ts && 
+      npm run dev"
 
+
+  # === GOOGLE CALENDAR SERVICE ===
   google-calendar-service:
     build: 
       context: ..
@@ -122,18 +176,31 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${AUTH_JWT_SECRET}
       - JWT_EXPIRES_IN=${AUTH_JWT_EXPIRES}
     volumes:
-      - ../services/google-calendar-service:/app
-      - /app/node_modules
+    # sync source code changes with hotreload
+      - ../services/google-calendar-service:/app/services/google-calendar-service
       - ../packages/common:/app/packages/common
-    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run dev" 
+    # avoid overwriting node_modules in the container
+      - /app/services/google-calendar-service/node_modules
+      - /app/packages/common/node_modules
+      - /app/node_modules
+    command: >  
+      sh -c "./wait-for-it.sh postgres:5432 -- 
+      npx prisma generate --config=/app/packages/common/prisma.config.ts && 
+      npm run dev"
 
+
+  # -----------------------------
+  # VOLUMES
+  # -----------------------------
 
 volumes:
   pgdata: 
     driver: local
+    name: ew_pgdata
   redisdata:
     driver: local
+    name: ew_redisdata

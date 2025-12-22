@@ -1,32 +1,23 @@
 # Dockerfile.dev para Notification Service (Node.js)
 
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache bash inotify-tools
+RUN apk update && apk add --no-cache bash openssl libc6-compat
 
-# Criar estrutura para a shared library
-RUN mkdir -p packages/common
-
-# 1. Copiar manifests (Caminhos relativos à raiz do projeto)
 COPY services/notification-service/package*.json ./
 COPY services/notification-service/tsconfig.json ./
 COPY packages/common/package*.json ./packages/common/
 
-# 2.Executar o npm ci
 RUN npm install
 
-# 3. Copiar código do serviço e da biblioteca
 COPY services/notification-service/ .
 COPY packages/common/ ./packages/common/
 
-# 4. Scripts e Permissões
 RUN chmod +x ./wait-for-it.sh
 RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
-# Expor a porta
 EXPOSE 3003
 
-# Rodar hot reload com ts-node-dev
-CMD ["sh", "/app/wait-for-it.sh", "postgres:5432", "--", "npm", "run", "dev"]
+# CMD ["sh", "/app/wait-for-it.sh", "postgres:5432", "--", "npm", "run", "dev"]
