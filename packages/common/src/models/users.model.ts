@@ -1,4 +1,4 @@
-import { prisma } from "../utils/prismaClient";
+import { prisma } from '../utils/prismaClient';
 import pino from 'pino';
 import { User } from "@prisma/client";
 
@@ -17,7 +17,7 @@ export const UserModel = {
             throw error;
         }
         
-        return prisma.user.create({
+        return await prisma.user.create({
             data: { username: username, email: email, password: hashedPassword },
         });
 
