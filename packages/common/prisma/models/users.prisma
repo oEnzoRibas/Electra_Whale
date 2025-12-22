@@ -1,0 +1,16 @@
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  emailVerified Boolean  @default(false)
+  image    String?
+  password  String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  todos     Todo[]
+
+  @@index ([email])
+  @@index ([username])
+}
