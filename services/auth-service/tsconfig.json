@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
@@ -19,10 +20,11 @@
 
     "baseUrl": ".",
     "paths": {
-      "@ew/common": ["./packages/common/src/index.ts"],
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "packages/common/src/**/*"],
+  "include": [
+    "src/**/*", 
+],
   "exclude": ["node_modules", "dist"]
 }
