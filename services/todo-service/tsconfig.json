@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "nodenext",
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "preserveSymlinks": true,
@@ -17,14 +17,18 @@
     "noEmitOnError": true,
 
     "forceConsistentCasingInFileNames": true,
-
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
   "include": [
-    "src/**/*", 
-],
-  "exclude": ["node_modules", "dist"]
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules", 
+    "dist"
+  ]
 }

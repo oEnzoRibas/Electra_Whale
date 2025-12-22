@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Auth Microservice for Electra Whale",
   "main": "dist/index.js",
+  "type": "module",
   "keywords": [
     "auth",
     "docker",
@@ -13,7 +14,6 @@
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.js"
   },
-  
   "author": "oEnzoRibas",
   "license": "MIT",
   "engines": {
@@ -25,7 +25,9 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "pino": "^10.1.0",
+    "pnpm": "^10.26.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

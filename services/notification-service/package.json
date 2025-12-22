@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Notification microservice for Electra Whale",
   "main": "dist/index.js",
+  "type":"module",
   "keywords": [
     "notification",
     "docker",

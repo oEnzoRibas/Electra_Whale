@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "API Gateway and router for Electra Whale",
   "main": "dist/index.js",
+  "type":"module",
   "keywords": [
     "api-gateway",
     "docker",

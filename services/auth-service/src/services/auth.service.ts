@@ -1,9 +1,8 @@
-import { UserModel } from '@ew/common';
-import { validatePassword, PasswordValidationError } from '../utils/passwordValidator'
-import * as bcrypt from 'bcrypt';
-import { User } from '../generated/prisma/index';
+import { UserModel, User } from '@ew/common';
+import { validatePassword, PasswordValidationError } from '../utils/passwordValidator.js'
 import jwt, { SignOptions, Secret } from "jsonwebtoken";
-import pino from 'pino';
+import * as bcrypt from "bcryptjs";
+import pino from "pino";
 
 const logger = pino({ name: 'auth-service', level: 'info' });
 

@@ -2,21 +2,36 @@
 
 FROM node:24-alpine
 
+RUN apk add --no-cache bash openssl libc6-compat
+
 WORKDIR /app
 
-RUN apk update && apk add --no-cache bash openssl libc6-compat
-
-COPY services/user-service/package*.json ./
-COPY services/user-service/tsconfig.json ./
+# 1. Copiamos o package.json do common
 COPY packages/common/package*.json ./packages/common/
 
+# Entramos na pasta e instalamos as dependências (incluindo @prisma/client)
+WORKDIR /app/packages/common
 RUN npm install
+# ---------------------
 
-COPY services/user-service/ .
+# Voltamos para a raiz e copiamos o resto do código do common
+WORKDIR /app
 COPY packages/common/ ./packages/common/
 
+# 2. Copiamos os arquivos do serviço (User Service)
+COPY services/user-service/package*.json ./services/user-service/
+COPY services/user-service/tsconfig.json ./services/user-service/
+
+# 3. Instalamos as dependências do serviço
+WORKDIR /app/services/user-service
+RUN npm install
+
+# 4. Linkamos o Prisma
+RUN ln -s /app/packages/common/node_modules/.bin/prisma /usr/local/bin/prisma
+
+# 5. Script de infra
+COPY services/user-service/wait-for-it.sh ./wait-for-it.sh
 RUN chmod +x ./wait-for-it.sh
-RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
 EXPOSE 3001
 

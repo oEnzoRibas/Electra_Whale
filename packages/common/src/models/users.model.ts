@@ -1,6 +1,6 @@
-import { prisma } from '../utils/prismaClient';
+import { prisma } from '../utils/prismaClient.js';
+import type { User } from '../generated/client/index.js';
 import pino from 'pino';
-import { User } from "@prisma/client";
 
 const logger = pino({ name: 'common-users-model', level: 'info' });
 
@@ -23,11 +23,11 @@ export const UserModel = {
 
     },
 
-    findByEmail: async (email: string): Promise<User> => {
+    findByEmail: async (email: string): Promise<User | null> => {
         return prisma.user.findUnique({ where: { email } });
     },
 
-    findById: async (id: number): Promise<User> => {
+    findById: async (id: number): Promise<User | null> => {
         return prisma.user.findUnique({ where: { id } });
     },
 

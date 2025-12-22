@@ -6,6 +6,8 @@
     "outDir": "./dist",
 
     "moduleResolution": "nodenext",
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "preserveSymlinks": true,
@@ -19,6 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

@@ -52,12 +52,19 @@ app.use('/api/todos', createProxyMiddleware({
 
 // USER SERVICE PROXY
 
-app.use('/api/user', createProxyMiddleware({
+app.use('/api/users', createProxyMiddleware({
   target: `http://user-service:${process.env.USER_SERVICE_PORT}`,
   changeOrigin: true,
   pathRewrite: {
-    '^/api/user': '',
+    '^/api/users': '',
   },
+  onError: (err, _req, res) => {
+    console.error('Error connecting to User Service:', err);
+    res.status(500).json({error: 'User Service is Temporarily Unavaliable'});
+  },
+  onProxyReq: (proxyReq, req) => {
+    console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
+  } 
 }));
 
 
