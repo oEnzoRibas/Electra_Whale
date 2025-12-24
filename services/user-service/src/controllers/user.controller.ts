@@ -111,4 +111,5 @@ async getMe(req: AuthRequest, res: Response) {
     }   
 
 }
+}
 export const userController = new UserController();

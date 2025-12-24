@@ -6,7 +6,6 @@ export interface UserPayload {
   name: string;
 }
 
-// Criamos um tipo que estende o Request que for passado para ele
 export type AuthRequest<T = Request> = T & {
   user?: UserPayload;
 };
