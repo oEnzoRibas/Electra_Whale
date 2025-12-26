@@ -16,7 +16,7 @@ export const authMiddleware : RequestHandler = (
     const [scheme, token] = authHeader.split(' ');
 
     if (!/^Bearer$/i.test(scheme)) {
-        return  res.status(401).json({ error: 'Malformed token' });
+        return  res.status(400).json({ error: 'Malformed token' });
     }
 
     try{
@@ -25,12 +25,11 @@ export const authMiddleware : RequestHandler = (
           process.env.AUTH_JWT_SECRET || 'fallback_secret'
         ) as UserPayload;
 
-
         req.user = decoded;
         
         return next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid Token' });
+    return res.status(401).json({ error: 'Invalid Token: ' + err });
   }
 
   

@@ -6,8 +6,8 @@ import pino from "pino";
 
 const logger = pino({ name: 'auth-service', level: 'info' });
 
-const JWT_SECRET = (process.env.JWT_SECRET || 'fallback_secret') as string;
-const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN || '1h') as string;
+const JWT_SECRET = (process.env.AUTH_JWT_SECRET || 'fallback_secret') as string;
+const JWT_EXPIRES_IN = (process.env.AUTH_JWT_EXPIRES_IN || '1h') as string;
 
 const SALT_ROUNDS = 8;
 
