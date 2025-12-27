@@ -1,0 +1,312 @@
+type: collection.insomnia.rest/5.0
+name: ElectraWhale
+meta:
+  id: wrk_0444e9b1032748488b3d7a0e6a2fe04b
+  created: 1766787713432
+  modified: 1766787713432
+collection:
+  - name: Auth
+    meta:
+      id: fld_72508ad9eef74b94b5e7b5f1475236a6
+      created: 1766788407908
+      modified: 1766788407908
+      sortKey: -1766788407908
+    children:
+      - url: "{{ _.ew.base_url }}:8080/api/auth/health"
+        name: /auth/health
+        meta:
+          id: req_12f7544b293f45668320502fc739de22
+          created: 1766788096109
+          modified: 1766792456739
+          isPrivate: false
+          sortKey: -1766788411558
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/auth/login"
+        name: /auth/login
+        meta:
+          id: req_4e82cc3beb2540398a7a9664b3c73b61
+          created: 1766788517152
+          modified: 1766808175288
+          isPrivate: false
+          sortKey: -1763800955164
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "enzo@ew.com",
+            	"password": "Ewhale123!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/auth/register"
+        name: /auth/register
+        meta:
+          id: req_b9d12f346be448018dbe48e9f6b42e41
+          created: 1766788598874
+          modified: 1766807686929
+          isPrivate: false
+          sortKey: -1762307226967
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "enzo@ew.com",
+            	"password": "Ewhale123!",
+            	"username": "enzoEw"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Todos
+    meta:
+      id: fld_95706bee21004314915f0f82f24682a0
+      created: 1766788420423
+      modified: 1766788420423
+      sortKey: -1766788420423
+    children:
+      - url: "{{ _.ew.base_url }}:8080/api/todos/health"
+        name: /todos/health
+        meta:
+          id: req_614d2ede60e74d74b0388c5bd0ddfbab
+          created: 1766788129462
+          modified: 1766792440166
+          isPrivate: false
+          sortKey: -1766788426501
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Api Gateway
+    meta:
+      id: fld_b03fd1fc2a6543c5b3f94d050bb9bdfd
+      created: 1766788436793
+      modified: 1766807709842
+      sortKey: -1766788436793
+    children:
+      - url: "{{ _.ew.base_url }}:8080/health"
+        name: /health
+        meta:
+          id: req_0f2cc3c12e96428b85818d58de5bd55b
+          created: 1766787872998
+          modified: 1766792424212
+          isPrivate: false
+          sortKey: -1766788440008
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/logs"
+        name: /logs
+        meta:
+          id: req_57cee8003a6c450d8b5d72590071bb87
+          created: 1766792420738
+          modified: 1766792432764
+          isPrivate: false
+          sortKey: -1766788433254.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: GoogleCalendar
+    meta:
+      id: fld_a500ab3f0ddf4edb83e34fc3af2d8804
+      created: 1766788453709
+      modified: 1766788453709
+      sortKey: -1766788453709
+    children:
+      - url: "{{ _.ew.base_url }}:8080/api/googlecalendar/health"
+        name: /health
+        meta:
+          id: req_95b15c9e110049ce826f6c3504c232d0
+          created: 1766793268272
+          modified: 1766793279604
+          isPrivate: false
+          sortKey: -1766793270469
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Users
+    meta:
+      id: fld_b217813a96fc4eed9ce4824f3711d27d
+      created: 1766788461520
+      modified: 1766788477977
+      sortKey: -1766788453809
+    children:
+      - url: "{{ _.ew.base_url }}:8080/api/users/health"
+        name: /users/health
+        meta:
+          id: req_e9f24fbf0eaf4addb8ffdcedd6e4d812
+          created: 1766788146620
+          modified: 1766792401149
+          isPrivate: false
+          sortKey: -1766788467359
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/users"
+        name: /users
+        meta:
+          id: req_c37816e267ce453c87564738e091bc40
+          created: 1766788709151
+          modified: 1766807594547
+          isPrivate: false
+          sortKey: -1766788453683.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE4LCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE3NjY4MDc1NjAsImV4cCI6MTc2NjgxMTE2MH0.DhUPWeUWJZcsRdjNnli_l5ZxgfJS_j_EnphB8VFew0c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/users/me"
+        name: /users/me
+        meta:
+          id: req_2a85829a0a264f09934302588f659670
+          created: 1766789504708
+          modified: 1766807744331
+          isPrivate: false
+          sortKey: -1766788446845.75
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6ImVuem9AZXcuY29tIiwiaWF0IjoxNzY2ODA3Njk4LCJleHAiOjE3NjY4MTEyOTh9.BZEB2NPo0Kij2ZyhcoxGGJJGkJfVZxkgYxIqa4V_6aQ
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.ew.base_url }}:8080/api/users/68"
+        name: /users/delete
+        meta:
+          id: req_4628fe28972748dcbda547decb5aca0c
+          created: 1766797887892
+          modified: 1766807633057
+          isPrivate: false
+          sortKey: -1766788467459
+        method: DELETE
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE4LCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE3NjY4MDc1NjAsImV4cCI6MTc2NjgxMTE2MH0.DhUPWeUWJZcsRdjNnli_l5ZxgfJS_j_EnphB8VFew0c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_3f52e4105abd50d89ceaa6391e03739f87d72c07
+    created: 1766787713437
+    modified: 1766787713437
+environments:
+  name: Base Environment
+  meta:
+    id: env_3f52e4105abd50d89ceaa6391e03739f87d72c07
+    created: 1766787713435
+    modified: 1766787980177
+    isPrivate: false
+  data:
+    ew:
+      base_url: "{{ _.ew.protocol }}://{{ _.ew.domain }}"
+      protocol: http
+      domain: 192.168.196.0
