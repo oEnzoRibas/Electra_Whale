@@ -18,7 +18,9 @@ To run the Electra Whale application locally, follow these steps:
     ```pwsh
     cd infra
     docker compose -f docker-compose.dev.yml -p ew up --build -d
+   ```
 
-    # to compose down
+4. When finished, compose down
+   ```pwsh
     docker compose -f docker-compose.dev.yml -p ew down --remove-orphans
     ```
