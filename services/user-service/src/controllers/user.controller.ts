@@ -46,7 +46,7 @@ getUserProfile = async(req: AuthRequest, res: Response) => {
 deleteUser = async(req: AuthRequest, res: Response) => {
     try{
         const id = this.getValidId(req, res);
-        if (id === null) return;
+        if (id === null) throw new Error('Invalid user ID');
 
         await userService.deleteUser(id);
         
@@ -56,7 +56,7 @@ deleteUser = async(req: AuthRequest, res: Response) => {
             });
     } catch (error){
         console.log(error);
-        res.status(500).json({ error: ' Error while deleting user. '})
+        res.status(500).json({ error: ' Error while deleting user:' + error.message })
     }
 };
 

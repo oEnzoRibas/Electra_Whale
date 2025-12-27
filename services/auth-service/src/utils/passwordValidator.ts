@@ -23,5 +23,9 @@ export function validatePassword(password: string): boolean{
         throw new PasswordValidationError('Password must contain at least one number.')
     }
 
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        throw new PasswordValidationError('Password must contain at least one special character.');
+    }
+
     return true;
 }

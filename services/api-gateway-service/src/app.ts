@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { errorLoggerMiddleware, requestLoggerMiddleware } from "@ew/common"
+import { errorLoggerMiddleware, requestLoggerMiddleware, errorMiddleware } from "@ew/common"
 import fs from "fs"
 import path from "path"
 
@@ -99,6 +99,8 @@ export function createApp(){
         console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
       } 
     }));
+
+    app.use(errorMiddleware);
 
     return app;
 }

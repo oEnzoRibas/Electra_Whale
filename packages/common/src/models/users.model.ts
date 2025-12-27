@@ -6,21 +6,12 @@ const logger = pino({ name: 'common-users-model', level: 'info' });
 
 export const UserModel = {
     create: async (username: string, email: string, hashedPassword: string) => {
-
-        try {
-            const existingUser = await prisma.user.findUnique({ where: { email } });   
-            if (existingUser) {
-                throw new Error('User with this email already exists.');
-            }
-        } catch (error) {
-            logger.error({ err: error }, 'An unexpected error occurred during user creation.');
-            throw error;
-        }
-        
         return await prisma.user.create({
-            data: { username: username, email: email, password: hashedPassword },
+            data: { 
+                username: username, 
+                email: email, 
+                password: hashedPassword },
         });
-
     },
 
     findByEmail: async (email: string): Promise<User | null> => {

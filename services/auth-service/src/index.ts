@@ -2,7 +2,7 @@
 
 import express, { Request, Response } from 'express';
 import pino from 'pino';
-
+import { errorMiddleware } from '@ew/common';
 import authRouter from './routes/auth.routes';
 import { RegisterController } from './controllers/auth.controller';
 
@@ -16,11 +16,7 @@ app.use(express.json());
 
 app.use('/', authRouter);
 
-app.use((err: Error, _req: Request, res: Response, _next: Function) => {
-  logger.error({ err }, 'Unhandled error occurred.');
-  res.status(500).json({ message: 'Internal server error.' });
-});
-
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   logger.info(`Auth Service is running on http://0.0.0.0:${PORT}`);
