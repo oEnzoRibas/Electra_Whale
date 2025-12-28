@@ -8,7 +8,7 @@ export function createApp(){
     const app = express();
     const logPath = path.join(process.cwd(), "logs/app.log")
 
-    // app.use(express.json());
+    // app.use(express.json()); Commented because it was increasis api gateway latency
     app.use(requestLoggerMiddleware);
 
     // API SERVICE PROXY 
@@ -42,7 +42,7 @@ export function createApp(){
         res.status(500).json({error: 'Auth Service is Temporarily Unavaliable'});
       },
       onProxyReq: (proxyReq, req) => {
-        console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
+        console.log(`[GATEWAY] Forwarding ${req.method} to ${req.url}`);
       }
     }));
 
@@ -59,7 +59,7 @@ export function createApp(){
         res.status(500).json({error: 'Todo Service is Temporarily Unavaliable'});
       },
       onProxyReq: (proxyReq, req) => {
-        console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
+        console.log(`[GATEWAY] Forwarding ${req.method} to ${req.url}`);
       }
     }));
 
@@ -78,7 +78,7 @@ export function createApp(){
         res.status(500).json({error: 'User Service is Temporarily Unavaliable'});
       },
       onProxyReq: (proxyReq, req) => {
-        console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
+        console.log(`[GATEWAY] Forwarding ${req.method} to ${req.url}`);
       } 
     }));
 
@@ -96,7 +96,7 @@ export function createApp(){
         res.status(500).json({error: 'Google Calendar Service is Temporarily Unavaliable'});
       },
       onProxyReq: (proxyReq, req) => {
-        console.log('[GATEWAY] Forwarding ${req.method} to ${req.url}');
+        console.log(`[GATEWAY] Forwarding ${req.method} to ${req.url}`);
       } 
     }));
 

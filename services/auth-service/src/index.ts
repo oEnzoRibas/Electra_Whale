@@ -14,6 +14,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  logger.info({ method: req.method, url: req.url }, 'Incoming request');
+  next();
+});
+
 app.use('/', authRouter);
 
 app.use(errorMiddleware);

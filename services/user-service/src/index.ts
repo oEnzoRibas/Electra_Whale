@@ -1,7 +1,7 @@
 // API User Microservice for Electra Whale
 
 import express, { Request, Response } from 'express';
-import { authMiddleware } from '@ew/common';
+import { errorMiddleware, authMiddleware } from '@ew/common';
 import pino from 'pino';
 
 import userRouter from './routes/user.routes.js';
@@ -20,11 +20,7 @@ app.use((req, res, next) => {
 
 app.use('/',userRouter);
 
-app.use((err: Error, _req: Request, res: Response, _next: Function) => {
-  logger.error({ err }, 'Unhandled error occurred.');
-  res.status(500).json({ message: 'Internal server error.' });
-});
-
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
     console.log(`User Service is running on http://0.0.0.0:${PORT}`);

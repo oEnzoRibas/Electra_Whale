@@ -1,37 +1,49 @@
 import { Router } from 'express';
 import { authMiddleware, AuthRequest } from '@ew/common';
-import { userController } from '../controllers/user.controller.js';
+import {
+  getUsersController,
+  getUserByIdController,
+  deleteUserController,
+  updateUserController,
+  getMeController,
+} from '../controllers/user.controller.js';
 
-const userRouter = Router();
+import { validateUserId } from '../middlewares/validateUserId.js';
+import { ownsResource } from '../middlewares/ownsResource.js';
 
-userRouter.get(
-    '/', 
-    authMiddleware, 
-    userController.getUsers);
+const usersRouter = Router();
 
-userRouter.get(
-    '/me', 
-    authMiddleware, 
-    userController.getMe.bind(userController)
-    );
-
-userRouter.get('/health', (_req: Request, res: Response) => {
-  res.status(200).json({
-       status: 'UP', 
-       service: 'User Service',
-      });
+usersRouter.get('/health', (_req, res) => {
+    res.status(200).json({
+        status: 'UP',
+        service: 'User Service Router',
+    });
 });
 
-userRouter.get('/:userId', 
-    authMiddleware, 
-    userController.getUserProfile);
+usersRouter.get(
+    '/', 
+    authMiddleware,
+    getUsersController);
+usersRouter.get(
+    '/me', 
+    authMiddleware,
+    getMeController);
+usersRouter.get(
+    '/:userId', 
+    authMiddleware,
+    validateUserId, 
+    getUserByIdController);
+usersRouter.delete(
+    '/:userId',
+    authMiddleware,
+    validateUserId, 
+    ownsResource, 
+    deleteUserController);
+usersRouter.patch(
+    '/:userId',
+    authMiddleware,
+    validateUserId, 
+    ownsResource, 
+    updateUserController);
 
-userRouter.delete('/:userId', 
-    authMiddleware, 
-    userController.deleteUser);
-
-userRouter.patch('/:userId', 
-    authMiddleware, 
-    userController.updateUser.bind(userController));
-
-export default userRouter;
+export default usersRouter;

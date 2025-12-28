@@ -4,7 +4,8 @@ import {
     UserUpdateError,
     UserDeletionError,
     UserFetchError,
-    UsersFetchError
+    UsersFetchError,
+    UserNotFoundError,
 } from '@ew/common';
 import { tr } from 'zod/locales';
 
@@ -42,7 +43,7 @@ class UserService{
 
     getUserById = async (
         userId: number
-    ): promise<User> =>
+    ): Promise<User> =>
     {
         try{
             return await prisma.user.findUnique({
@@ -63,13 +64,16 @@ class UserService{
 
     deleteUser = async (
         userId: number,
-    ): promise<void> => {
+    ): Promise<void> => {
         try{
             await prisma.user.delete({
                 where: { id: userId },
             });
         } catch (error: any) {
             logger.error(`Failed to delete user: ${error.message}`);
+            if (error.code === 'P2025') {
+                throw new UserNotFoundError();
+            }
             throw new UserDeletionError(error.message);
         }
     }
@@ -77,7 +81,7 @@ class UserService{
     updateUser = async (
         userId: number,
         data: { username?: string; email?: string; password?: string }
-    ): promise<User> => {
+    ): Promise<User> => {
         try{
             return await prisma.user.update({
                 where: { id: userId},
@@ -93,9 +97,12 @@ class UserService{
                 },
             });
         } catch (error: any) {
-            logger.error(`Failed to update user: ${error.message}`);
-            throw new UserUpdateError(error.message);
+            logger.error(`Failed to delete user: ${error.message}`);
+            if (error.code === 'P2025') {
+                throw new UserNotFoundError();
             }
+            throw new UserUpdateError(error.message);
+        }
         }
     }
 
